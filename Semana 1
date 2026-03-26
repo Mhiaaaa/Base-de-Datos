@@ -1,3 +1,13 @@
 
-Problema: 
+Problema:
+se nesesita registrar clientes con su nombre apellido y genero, que este ordenado.  
 Solucion:
+Crear una base de datos con una tabla que almacene estos datos, que permita guardar la informacion
+
+
+Comandos:
+create table clientes {
+nombre varchar(100),
+apellido varchar(100),
+GENERO VARCHAR(20)
+};
