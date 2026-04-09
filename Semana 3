@@ -1,3 +1,10 @@
+Problema: La información de libros y autores está separada y sería difícil relacionarla, provocando desorden y repetición de datos.
+
+Solución: La base de datos relaciona las tablas mediante claves y permite consultar toda la información fácilmente usando comandos SQL.
+
+
+
+
 CREATE DATABASE TiendaLibros;
 USE TiendaLibros;
 
