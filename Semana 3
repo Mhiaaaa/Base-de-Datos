@@ -1,1 +1,60 @@
+CREATE DATABASE TiendaLibros;
+USE TiendaLibros;
 
+--dos tablas (autores y libros)--
+CREATE TABLE Autores (
+    id_autor INT PRIMARY KEY,
+    nombre VARCHAR(100),
+    pais VARCHAR(50)
+);
+
+CREATE TABLE Libros (
+    id_libro INT PRIMARY KEY,
+    titulo VARCHAR(100),
+    genero VARCHAR(50),
+    precio DECIMAL(6,2),
+    id_autor INT,
+    FOREIGN KEY (id_autor) REFERENCES Autores(id_autor)
+);
+
+-insertamos los datos--
+INSERT INTO Autores VALUES
+(1, 'Gabriel García Márquez', 'Colombia'),
+(2, 'Mario Vargas Llosa', 'Perú'),
+(3, 'Isabel Allende', 'Chile');
+
+INSERT INTO Libros VALUES
+(101, 'Cien años de soledad', 'Novela', 25.50, 1),
+(102, 'El amor en los tiempos del cólera', 'Novela', 20.00, 1),
+(103, 'La ciudad y los perros', 'Novela', 18.75, 2),
+(104, 'La casa de los espíritus', 'Drama', 22.40, 3);
+
+--vemos los libros--
+SELECT * FROM Libros;
+
+--vemos solo el titulo y precio--
+SELECT titulo, precio FROM Libros;
+
+--libros que cuestan mas de 20 (where)--
+SELECT titulo, precio
+FROM Libros
+WHERE precio > 20;
+
+--ordenamos libros por precio (mayora menor)--
+SELECT titulo, precio
+FROM Libros
+ORDER BY precio DESC;
+
+--mostramos el titulo del libro y el nombre del autor (inner join)--
+SELECT Libros.titulo, Autores.nombre
+FROM Libros
+INNER JOIN Autores
+ON Libros.id_autor = Autores.id_autor;
+
+--libros de autores de colombia, ordenados por precio--
+SELECT Libros.titulo, Autores.nombre, Libros.precio
+FROM Libros
+INNER JOIN Autores
+ON Libros.id_autor = Autores.id_autor
+WHERE Autores.pais = 'Colombia'
+ORDER BY Libros.precio ASC;
