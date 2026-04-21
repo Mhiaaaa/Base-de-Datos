@@ -1,13 +1,18 @@
+¿Que es una base de datos?
+Es un conjunto organizado de información (datos) que se almacena de
+forma estructurada para que sea fácil acceder, gestionar y actualizar
 
-Problema:
-se nesesita registrar clientes con su nombre apellido y genero, que este ordenado.  
-Solucion:
-Crear una base de datos con una tabla que almacene estos datos, que permita guardar la informacion
+Conceptos.
+-Tabla: Es como una hoja de cálculo. Tiene columnas (campos) y filas (registros).
+-Registro: Una fila con datos de una sola "cosa" (ej: un cliente, un libro, un pedido).
+-Campo: Una columna que representa un tipo de dato (ej: nombre, fecha, precio).
 
+CLAVES:
+Existen dos claves
+-Clave primaria: Un campo único que identifica cada registro (ej: DNI, ID, ISBN).-
+-Consulta (query): Preguntas que haces a la base de datos (ej: "Dame todos los clientes").
 
-Comandos:
-create table clientes {
-nombre varchar(100),
-apellido varchar(100),
-GENERO VARCHAR(20)
-};
+Tipo de base de datos: 
+-Relacional (SQL): Muy estructurada. Usa tablas y relaciones. Ej: MySQL, PostgreSQL, SQL Server.
+-No relacional (NoSQL): Más flexible. Útil para datos no estructurados. Ej: MongoDB, Firebase.
+
