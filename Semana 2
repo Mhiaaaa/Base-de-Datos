@@ -1,1 +1,38 @@
+Estructura principal
+Tabla Estudiantes:
+ID_Estudiante (PK)
+Nombre
+ID_Curso (FK)
 
+Tabla Cursos:
+ID_Curso (PK)
+Nombre_Curso
+ID_Profesor (FK)
+
+
+Tabla Profesores:
+ID_Profesor (PK)
+Nombre_Profesor
+
+¿Que es la redundancia de datos?
+Si una materia la dictan varios docentes o un alumno se cambia de asignatura,
+es necesario modificar varios registros. Esto incrementa el riesgo de cometer 
+errores y de que la información quede inconsistente.
+
+ejemplo:
+Si un producto está asociado a varios proveedores o un cliente cambia de dirección, 
+es necesario actualizar varios registros. Esto aumenta la probabilidad de errores y
+puede generar inconsistencias en los datos.
+Supongamos que comenzamos con los siguientes datos:
+
+Productos:
+1, "Laptop"
+2, "Impresora"
+
+Proveedores
+101, "TechCorp"
+102, "Distribuciones Globales"
+
+Clientes
+201, "Carlos Ramírez", "Laptop", "TechCorp"
+202, "Lucía Fernández", "Impresora", "Distribuciones Globales"
