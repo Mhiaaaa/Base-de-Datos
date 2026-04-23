@@ -1,6 +1,13 @@
 ¿Que es una base de datos?
-Es un conjunto organizado de información (datos) que se almacena de
-forma estructurada para que sea fácil acceder, gestionar y actualizar
+Una base de datos es como un cuaderno digital bien ordenado donde guardas 
+información para no perderla y poder encontrarla rápido cuando la necesitas.
+En lugar de tener datos regados por todos lados, los pones en un solo lugar
+y acomodados, para poder buscarlos, cambiarlos o agregar más sin hacer un desorden.
+
+Por ejemplo:
+Una lista de clientes con sus nombres, teléfonos y correos.
+Las notas de los alumnos en una escuela.
+Los productos y precios de una tienda.
 
 Conceptos.
 -Tabla: Es como una hoja de cálculo. Tiene columnas (campos) y filas (registros).
