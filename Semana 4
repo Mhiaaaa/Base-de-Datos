@@ -1,1 +1,69 @@
+OPERADORES LÓGICOS:
 
+IS NULL:
+Se usa para buscar datos que están vacíos (sin información)
+SELECT * FROM alumnos
+WHERE telefono IS NULL;
+--Busca alumnos que no tienen teléfono registrado
+
+LIKE:
+Se usa para buscar datos que se parecen a un texto
+SELECT * FROM alumnos
+WHERE nombre LIKE 'Mar%';
+--Busca nombres que empiezan con “Mar”
+
+IN:
+Se usa cuando quieres buscar varios valores posibles al mismo tiempo
+SELECT * FROM alumnos
+WHERE grado IN (1, 2, 3);
+--Busca alumnos que estén en 1°, 2° o 3° grado
+
+BETWEEN:
+Se usa para buscar datos dentro de un rango
+SELECT * FROM alumnos
+WHERE edad BETWEEN 18 AND 25;
+--Busca alumnos que tengan entre 18 y 25 años
+
+LOS TRES VALORES LOGICOS DE SQL:
+La lógica de tres valores es una forma de evaluar condiciones donde
+no solo existe verdadero y falso, sino también un tercer valor: desconocido (NULL)
+Esto pasa cuando en una base de datos hay campos vacíos
+Entonces, una condición puede dar como resultado:
+-Verdadero= TRUE
+-Falso= FALSE
+-Desconocido = UNKNOWN (porque el dato es NULL)
+Entonces si..
+edad > 18
+-Si edad es 20 → TRUE
+-Si edad es 15 → FALSE
+-Si edad es NULL → UNKNOWN (no se puede saber)
+
+CLÁUSULA GROUP BY:
+se usa para agrupar datos que tienen algo en común y así poder 
+hacer cuentas sobre cada grupo (como contar, sumar, promediar).
+Es como juntar en montones los datos que se parecen.
+SELECT grado, COUNT(*) 
+FROM alumnos
+GROUP BY grado;
+--Esto junta a los alumnos por grado y cuenta cuántos hay en cada uno
+
+CLÁUSULA HAVING:
+se usa para filtrar los grupos que se forman con GROUP BY
+Primero se agrupan los datos, y luego con HAVING decides qué grupos te interesan
+SELECT grado, COUNT(*) 
+FROM alumnos
+GROUP BY grado
+HAVING COUNT(*) > 30;
+--Agrupa a los alumnos por grado y muestra solo los grados que tienen más de 30 alumnos
+
+USO DE CASE:
+se usa para poner condiciones dentro de una consulta
+y devolver un resultado según lo que se cumpla
+Es como un “si pasa esto muestra esto otro” dentro del SQL
+SELECT nombre,
+CASE
+  WHEN nota >= 11 THEN 'Aprobado'
+  ELSE 'Desaprobado'
+END AS estado
+FROM alumnos;
+--Muestra el nombre del alumno y dice “Aprobado” o “Desaprobado” según su nota.
