@@ -1,27 +1,55 @@
-Estructura principal
+--TABLA PARA ESTUDIANTES
 Tabla Estudiantes:
 ID_Estudiante (PK)
 Nombre
 ID_Curso (FK)
 
-Tabla Cursos:
+-TABLA PARA CURSOS
 ID_Curso (PK)
 Nombre_Curso
 ID_Profesor (FK)
 
-
-Tabla Profesores:
+--TABLA PARA PROFESORES
 ID_Profesor (PK)
 Nombre_Profesor
+
+¿Cómo seria un mal uso de una clase primaria??
+La PK debe ser única y no repetirse.
+un mal uso seria usar como PK un dato que se puede repetir.
+Ejemplo:
+Tabla alumnos donde el nombre es PK.
+
+nombre	edad
+-------------
+Juan	   18
+Juan	   20
+
+¿cómo seria un mal uso de la clase foranea???
+La FK debe apuntar a un dato que existe en otra tabla.
+Mal uso: guardar un valor que no existe en la tabla relacionada.
+Ejemplo:
+
+Tabla cursos:
+
+id_curso  - 	nombre
+1	        -   Matemática
+
+El nombre se repite, entonces no sirve como clave primaria.
+
+Tabla alumnos:
+
+nombre	-  id_curso
+Ana	    -     5
+
+El curso 5 no existe, entonces esa FK está mal usada.
 
 ¿Que es la redundancia de datos?
 Si una materia la dictan varios docentes o un alumno se cambia de asignatura,
 es necesario modificar varios registros. Esto incrementa el riesgo de cometer 
 errores y de que la información quede inconsistente.
-
 ejemplo:
 Si un producto está asociado a varios proveedores o un cliente cambia de dirección, 
-es necesario actualizar varios registros. Esto aumenta la probabilidad de errores y
+es necesario actualizar varios registros, esto aumenta la probabilidad de errores y
 puede generar inconsistencias en los datos.
 Supongamos que comenzamos con los siguientes datos:
 
