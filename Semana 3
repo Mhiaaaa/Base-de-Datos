@@ -1,9 +1,34 @@
-Problema: La información de libros y autores está separada y sería difícil relacionarla, provocando desorden y repetición de datos.
+¿Que es SQL?
+SQL es el lenguaje que se usa para hablar con una base de datos.
+Con SQL le dices a la base de datos qué quieres hacer:
+guardar información, buscar datos, cambiarlos o borrarlos.
+Es como darle instrucciones para que te entregue exactamente lo que necesitas.
 
-Solución: La base de datos relaciona las tablas mediante claves y permite consultar toda la información fácilmente usando comandos SQL.
+Modelo Entidad-Relacion:
+s una forma de dibujar y organizar cómo se conectan los datos antes de crear una base de datos.
+Sirve para entender:
+-Qué cosas existen (entidades), por ejemplo: alumno, curso, profesor.
+-Qué información tiene cada cosa (atributos), por ejemplo: nombre, edad, código.
+-Cómo se relacionan entre sí (relaciones), por ejemplo: un alumno se inscribe en un curso.
 
+Es como hacer un mapa o plano de la información para que después sea más fácil
+construir la base de datos sin confusiones.
 
+ ¿Como pcrear una base de datos?
+Para crear una base de datos en SQL Server, usa la siguiente instrucción SQL:
+CREATE DATABASE NombreBaseDeDatos;
 
+¿Como crear una creacion de tablas?
+Una vez creada la base de datos, puedes definir tablas con la instrucción CREATE TABLE.
+
+Para una carga de datos:
+Para insertar datos en una tabla, utiliza la instrucción INSERT INTO
+
+EJERCICIO: 
+Problema: La información de libros y autores está separada y sería difícil relacionarla,
+provocando desorden y repetición de datos.
+Solución: La base de datos relaciona las tablas mediante claves y permite consultar
+toda la información fácilmente usando comandos SQL.
 
 CREATE DATABASE TiendaLibros;
 USE TiendaLibros;
