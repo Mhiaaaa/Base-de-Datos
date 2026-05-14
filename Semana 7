@@ -1,0 +1,61 @@
+create database TiendaBD;
+
+use TiendaBD;
+
+CREATE TABLE Categorias (
+    IdCategoria INT PRIMARY KEY IDENTITY(1,1),
+    NombreCategoria VARCHAR(50)
+);
+
+INSERT INTO Categorias (NombreCategoria)
+VALUES ('Tecnologia'), ('Muebles');
+
+CREATE TABLE Productos (
+    IdProducto INT PRIMARY KEY IDENTITY(1,1),
+    Nombre VARCHAR(100),
+    Precio DECIMAL(10,2),
+    Stock INT,
+    IdCategoria INT,
+    FOREIGN KEY (IdCategoria) REFERENCES Categorias(IdCategoria)
+);
+
+INSERT INTO Productos (Nombre, Precio, Stock, IdCategoria)
+VALUES
+('Laptop', 15000, 10, 1),
+('Mouse', 300, 50, 1),
+('Teclado', 800, 30, 1),
+('Silla', 2500, 15, 2),
+('Escritorio', 4500, 5, 2);
+
+Select * from Productos;
+
+UPDATE Productos
+SET Precio = 350
+WHERE Nombre = 'Mouse';
+
+DELETE FROM Productos
+WHERE Nombre = 'Teclado';
+
+SELECT 
+    p.Nombre,
+    p.Precio,
+    p.Stock,
+    c.NombreCategoria
+FROM Productos p
+INNER JOIN Categorias c
+    ON p.IdCategoria = c.IdCategoria;
+
+
+SELECT *
+FROM
+(
+    SELECT c.NombreCategoria, p.Stock
+    FROM Productos p
+    INNER JOIN Categorias c
+        ON p.IdCategoria = c.IdCategoria
+) AS TablaOrigen
+PIVOT
+(
+    SUM(Stock)
+    FOR NombreCategoria IN ([Tecnologia], [Muebles])
+) AS TablaPivot;
