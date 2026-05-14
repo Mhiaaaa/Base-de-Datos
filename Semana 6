@@ -1,1 +1,120 @@
- nyjnu
+CREATE DATABASE tienda_online;
+USE tienda_online;
+
+CREATE TABLE clientes (
+    id_cliente INT PRIMARY KEY,
+    nombre VARCHAR(50),
+    ciudad VARCHAR(50)
+);
+
+CREATE TABLE productos (
+    id_producto INT PRIMARY KEY,
+    nombre_producto VARCHAR(50),
+    precio DECIMAL(10,2)
+);
+
+
+CREATE TABLE pedidos (
+    id_pedido INT PRIMARY KEY,
+    id_cliente INT,
+    fecha DATE,
+    FOREIGN KEY (id_cliente) REFERENCES clientes(id_cliente)
+);
+
+
+CREATE TABLE detalle_pedido (
+    id_pedido INT,
+    id_producto INT,
+    cantidad INT,
+    PRIMARY KEY (id_pedido, id_producto),
+    FOREIGN KEY (id_pedido) REFERENCES pedidos(id_pedido),
+    FOREIGN KEY (id_producto) REFERENCES productos(id_producto)
+);
+
+--insertanos datos--
+
+INSERT INTO clientes VALUES
+(1, 'Ana', 'Madrid'),
+(2, 'Luis', 'Bogotá'),
+(3, 'Carla', 'Lima'),
+(4, 'Pedro', 'Quito');  -- No ha comprado
+
+INSERT INTO productos VALUES
+(101, 'Laptop', 800),
+(102, 'Mouse', 20),
+(103, 'Teclado', 50),
+(104, 'Monitor', 200); -- Nunca vendido
+
+INSERT INTO pedidos VALUES
+(1001, 1, '2024-05-01'),
+(1002, 2, '2024-05-03'),
+(1003, 1, '2024-05-05');
+
+INSERT INTO detalle_pedido VALUES
+(1001, 101, 1),
+(1001, 102, 2),
+(1002, 103, 1),
+(1003, 101, 1);
+
+
+-- Clientes que han hecho pedidos
+SELECT c.nombre, p.id_pedido, p.fecha
+FROM clientes c
+INNER JOIN pedidos p
+ON c.id_cliente = p.id_cliente;
+
+
+-- Todos los clientes compren o no
+SELECT c.nombre, p.id_pedido
+FROM clientes c
+LEFT JOIN pedidos p
+ON c.id_cliente = p.id_cliente;
+
+-- Todos los pedidos asi el cliente no exista
+SELECT c.nombre, p.id_pedido
+FROM clientes c
+RIGHT JOIN pedidos p
+ON c.id_cliente = p.id_cliente;
+
+--muestra todo clientes, y pedidos asi haiga o no
+SELECT c.nombre, p.id_pedido
+FROM clientes c
+LEFT JOIN pedidos p
+ON c.id_cliente = p.id_cliente
+
+UNION
+
+SELECT c.nombre, p.id_pedido
+FROM clientes c
+RIGHT JOIN pedidos p
+ON c.id_cliente = p.id_cliente;
+
+-- Todos los clientes con todos los productos
+SELECT c.nombre, pr.nombre_producto
+FROM clientes c
+CROSS JOIN productos pr;
+
+-- JOIN MULTIPLE (4 tablas)
+-- Qué compró cada cliente
+SELECT c.nombre, pr.nombre_producto, dp.cantidad
+FROM clientes c
+JOIN pedidos p ON c.id_cliente = p.id_cliente
+JOIN detalle_pedido dp ON p.id_pedido = dp.id_pedido
+JOIN productos pr ON dp.id_producto = pr.id_producto;
+
+-- Clientes que compraron laptop o teclado(union mas join)
+SELECT c.nombre, pr.nombre_producto
+FROM clientes c
+JOIN pedidos p ON c.id_cliente = p.id_cliente
+JOIN detalle_pedido dp ON p.id_pedido = dp.id_pedido
+JOIN productos pr ON dp.id_producto = pr.id_producto
+WHERE pr.nombre_producto = 'Laptop'
+
+UNION
+
+SELECT c.nombre, pr.nombre_producto
+FROM clientes c
+JOIN pedidos p ON c.id_cliente = p.id_cliente
+JOIN detalle_pedido dp ON p.id_pedido = dp.id_pedido
+JOIN productos pr ON dp.id_producto = pr.id_producto
+WHERE pr.nombre_producto = 'Teclado';
