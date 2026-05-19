@@ -1,1 +1,114 @@
-lab 8
+CREATE DATABASE ClinicaDB;
+
+USE ClinicaDB;
+
+CREATE TABLE Pacientes (
+    PacienteID INT PRIMARY KEY IDENTITY,
+    Nombres VARCHAR(100),
+    Apellidos VARCHAR(100),
+    DNI CHAR(8)
+);
+
+CREATE TABLE Medicos (
+    MedicoID INT PRIMARY KEY IDENTITY,
+    Nombres VARCHAR(100),
+    Especialidad VARCHAR(100)
+);
+
+CREATE TABLE Citas (
+    CitaID INT PRIMARY KEY IDENTITY,
+    PacienteID INT,
+    MedicoID INT,
+    FechaCita DATE,
+    Estado VARCHAR(20),
+    FOREIGN KEY (PacienteID) REFERENCES Pacientes(PacienteID),
+    FOREIGN KEY (MedicoID) REFERENCES Medicos(MedicoID)
+);
+
+CREATE TABLE Pagos (
+    PagoID INT PRIMARY KEY IDENTITY,
+    CitaID INT,
+    Monto DECIMAL(10,2),
+    FechaPago DATE,
+    FOREIGN KEY (CitaID) REFERENCES Citas(CitaID)
+);
+
+INSERT INTO Pacientes (Nombres, Apellidos, DNI)
+VALUES ('Luis', 'Perez', '45678912');
+
+INSERT INTO Medicos (Nombres, Especialidad)
+VALUES ('Dra. Torres', 'Cardiologia');
+--
+CREATE PROCEDURE ProcesarCita
+    @PacienteID INT,
+    @MedicoID INT,
+    @Monto DECIMAL(10,2)
+AS
+BEGIN
+    BEGIN TRANSACTION;
+
+    BEGIN TRY
+        -- Crear cita
+        INSERT INTO Citas (PacienteID, MedicoID, FechaCita, Estado)
+        VALUES (@PacienteID, @MedicoID, GETDATE(), 'Atendida');
+
+        DECLARE @CitaID INT = SCOPE_IDENTITY();
+
+        -- Registrar pago
+        INSERT INTO Pagos (CitaID, Monto, FechaPago)
+        VALUES (@CitaID, @Monto, GETDATE());
+
+        COMMIT TRANSACTION;
+    END TRY
+    BEGIN CATCH
+        ROLLBACK TRANSACTION;
+        THROW;
+    END CATCH
+END;
+
+--
+
+CREATE FUNCTION fn_CantidadCitas (@PacienteID INT)
+RETURNS INT
+AS
+BEGIN
+    DECLARE @Cantidad INT;
+
+    SELECT @Cantidad = COUNT(*)
+    FROM Citas
+    WHERE PacienteID = @PacienteID;
+
+    RETURN @Cantidad;
+END;
+
+--
+EXEC ProcesarCita 1, 1, 150.00;
+--
+SELECT dbo.fn_CantidadCitas(1);
+--
+SELECT * FROM Pacientes;
+SELECT * FROM Medicos;
+SELECT * FROM Citas;
+SELECT * FROM Pagos;
+--
+EXEC ProcesarCita 1, 1, 150.00;
+EXEC ProcesarCita 1, 1, 200.00;
+EXEC ProcesarCita 1, 1, 180.00;
+--
+SELECT * FROM Citas;
+SELECT * FROM Pagos;
+--
+SELECT dbo.fn_CantidadCitas(1) AS TotalCitas;
+--
+EXEC ProcesarCita 99, 99, 100.00;
+--
+SELECT * FROM Citas;
+--
+SELECT 
+    P.Nombres,
+    COUNT(C.CitaID) AS CantidadCitas,
+    SUM(PA.Monto) AS TotalPagado
+FROM Pacientes P
+JOIN Citas C ON P.PacienteID = C.PacienteID
+JOIN Pagos PA ON C.CitaID = PA.CitaID
+GROUP BY P.Nombres;
