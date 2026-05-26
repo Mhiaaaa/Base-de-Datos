@@ -1,0 +1,106 @@
+CREATE DATABASE Universidad;
+
+USE Universidad;
+
+-- TABLA ESTUDIANTES
+
+CREATE TABLE Estudiantes (
+    id_estudiante INT PRIMARY KEY IDENTITY(1,1),
+    nombre VARCHAR(100),
+    carrera VARCHAR(100),
+    edad INT
+);
+
+-- TABLA CURSOS
+CREATE TABLE Cursos (
+    id_curso INT PRIMARY KEY IDENTITY(1,1),
+    nombre_curso VARCHAR(100),
+    creditos INT
+);
+
+-- TABLA PROFESORES
+CREATE TABLE Profesores (
+    id_profesor INT PRIMARY KEY IDENTITY(1,1),
+    nombre_profesor VARCHAR(100),
+    especialidad VARCHAR(100)
+);
+
+-- TABLA INSCRIPCIONES
+CREATE TABLE Inscripciones (
+    id_inscripcion INT PRIMARY KEY IDENTITY(1,1),
+    id_estudiante INT,
+    id_curso INT,
+    nota DECIMAL(4,2),
+
+    FOREIGN KEY (id_estudiante)
+    REFERENCES Estudiantes(id_estudiante),
+
+    FOREIGN KEY (id_curso)
+    REFERENCES Cursos(id_curso)
+);
+
+-- INSERTAR DATOS
+INSERT INTO Estudiantes (nombre, carrera, edad)
+VALUES
+('Luis Mendoza', 'Ingeniería', 20),
+('María Torres', 'Derecho', 22),
+('Pedro Ramos', 'Medicina', 21),
+('Ana López', 'Arquitectura', 23);
+
+INSERT INTO Cursos (nombre_curso, creditos)
+VALUES
+('Base de Datos', 4),
+('Programación', 5),
+('Matemática', 4),
+('Física', 3);
+
+INSERT INTO Profesores (nombre_profesor, especialidad)
+VALUES
+('Carlos Ruiz', 'Programación'),
+('Ana García', 'Matemática'),
+('José Pérez', 'Base de Datos');
+
+INSERT INTO Inscripciones (id_estudiante, id_curso, nota)
+VALUES
+(1,1,18),
+(1,2,17),
+(2,1,16),
+(3,3,15);
+
+-- INNER JOIN
+SELECT 
+    E.nombre AS Estudiante,
+    C.nombre_curso AS Curso,
+    I.nota
+FROM Inscripciones I
+INNER JOIN Estudiantes E
+ON I.id_estudiante = E.id_estudiante
+INNER JOIN Cursos C
+ON I.id_curso = C.id_curso;
+
+-- LEFT JOIN
+SELECT 
+    E.nombre AS Estudiante,
+    C.nombre_curso AS Curso
+FROM Estudiantes E
+LEFT JOIN Inscripciones I
+ON E.id_estudiante = I.id_estudiante
+LEFT JOIN Cursos C
+ON I.id_curso = C.id_curso;
+
+-- RIGHT JOIN
+SELECT 
+    E.nombre AS Estudiante,
+    C.nombre_curso AS Curso
+FROM Inscripciones I
+RIGHT JOIN Cursos C
+ON I.id_curso = C.id_curso
+LEFT JOIN Estudiantes E
+ON I.id_estudiante = E.id_estudiante;
+
+-- CROSS JOIN
+SELECT 
+    E.nombre AS Estudiante,
+    P.nombre_profesor AS Profesor
+FROM Estudiantes E
+CROSS JOIN Profesores P;
