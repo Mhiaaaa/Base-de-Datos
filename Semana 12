@@ -1,0 +1,58 @@
+-- Crear la base de datos
+CREATE DATABASE Biblioteca12;
+USE Biblioteca12;
+
+-- Tabla de autores
+CREATE TABLE Autores (
+    id_autor INT PRIMARY KEY,
+    nombre VARCHAR(50),
+    nacionalidad VARCHAR(30)
+);
+
+-- Tabla de libros
+CREATE TABLE Libros (
+    id_libro INT PRIMARY KEY,
+    titulo VARCHAR(100),
+    fecha_publicacion DATE,
+
+-- Insertar datos en Autores
+INSERT INTO Autores VALUES
+(1, 'Gabriel Garcia Marquez', 'Colombiano'),
+(2, 'Mario Vargas Llosa', 'Peruano'),
+(3, 'Julio Verne', 'Frances');
+
+-- Insertar datos en Libros
+INSERT INTO Libros VALUES
+(1, 'Cien Anos de Soledad', '1967-05-30', 471, 1),
+(2, 'La Ciudad y los Perros', '1963-10-10', 350, 2),
+(3, 'Veinte Mil Leguas de Viaje Submarino', '1870-06-20', 420, 3);
+
+-- FUNCION DE TEXTO (cadena)
+SELECT UPPER(titulo) AS Titulo_Mayuscula
+FROM Libros;
+
+-- FUNCION DE CONVERSION DE TIPO
+SELECT CAST(paginas AS CHAR) AS Paginas_Texto
+FROM Libros;
+
+-- FUNCION DE FECHA
+SELECT YEAR(fecha_publicacion) AS Anio_Publicacion
+FROM Libros;
+
+-- SUBCONSULTA CON IN
+SELECT titulo
+FROM Libros
+WHERE id_autor IN (
+    SELECT id_autor
+    FROM Autores
+    WHERE nacionalidad = 'Peruano'
+);
+
+-- SUBCONSULTA CON EXISTS
+SELECT nombre
+FROM Autores a
+WHERE EXISTS (
+    SELECT 1
+    FROM Libros l
+    WHERE l.id_autor = a.id_autor
+);
