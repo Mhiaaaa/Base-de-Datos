@@ -1,0 +1,27 @@
+-- Crear la base de datos
+CREATE DATABASE Tienda;
+USE Tienda;
+
+-- Crear la tabla de ventas
+CREATE TABLE Ventas (
+    id INT PRIMARY KEY,
+    producto VARCHAR(50),
+    cantidad INT,
+    precio DECIMAL(10,2)
+);
+
+-- Insertar datos
+INSERT INTO Ventas (id, producto, cantidad, precio) VALUES
+(1, 'Lapiz', 10, 1.50),
+(2, 'Cuaderno', 5, 4.00),
+(3, 'Lapiz', 20, 1.50),
+(4, 'Borrador', 8, 2.00),
+(5, 'Cuaderno', 10, 4.00);
+
+-- Consulta usando una función, GROUP BY y HAVING
+SELECT
+    producto,
+    SUM(cantidad) AS total_vendido
+FROM Ventas
+GROUP BY producto
+HAVING SUM(cantidad) > 10;
