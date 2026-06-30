@@ -1,0 +1,86 @@
+-- CREAR BASE DE DATOS
+CREATE DATABASE Cine13;
+
+
+USE Cine13;
+
+-- CREAR TABLA
+CREATE TABLE Peliculas (
+    Id INT IDENTITY(1,1) PRIMARY KEY,
+    Titulo NVARCHAR(100),
+    Director NVARCHAR(100),
+    Anio INT
+);
+
+-- FUNCION: Clasificar película
+CREATE FUNCTION dbo.TipoPelicula13
+(
+    @Anio INT
+)
+RETURNS NVARCHAR(20)
+AS
+BEGIN
+    DECLARE @Resultado NVARCHAR(20);
+
+    IF @Anio < 2000
+        SET @Resultado = 'Clasica';
+    ELSE
+        SET @Resultado = 'Moderna';
+
+    RETURN @Resultado;
+END;
+
+-- PROCEDIMIENTO ALMACENADO:
+-- Insertar una película
+CREATE PROCEDURE dbo.InsertarPelicula13
+(
+    @Titulo NVARCHAR(100),
+    @Director NVARCHAR(100),
+    @Anio INT
+)
+AS
+BEGIN
+    INSERT INTO Peliculas (Titulo, Director, Anio)
+    VALUES (@Titulo, @Director, @Anio);
+END;
+
+-- INSERTAR DATOS DE PRUEBA
+EXEC dbo.InsertarPelicula13 'Titanic', 'James Cameron', 1997;
+EXEC dbo.InsertarPelicula13 'Avatar', 'James Cameron', 2009;
+EXEC dbo.InsertarPelicula13 'Inception', 'Christopher Nolan', 2010;
+EXEC dbo.InsertarPelicula13 'The Matrix', 'Lana y Lilly Wachowski', 1999;
+
+-- PROBAR LA FUNCION
+SELECT
+    Titulo,
+    Director,
+    Anio,
+    dbo.TipoPelicula13(Anio) AS Categoria
+FROM Peliculas;
+
+-- CURSOR
+DECLARE @Titulo NVARCHAR(100);
+DECLARE @Director NVARCHAR(100);
+DECLARE @Anio INT;
+
+DECLARE pelicula_cursor13 CURSOR FOR
+SELECT Titulo, Director, Anio
+FROM Peliculas;
+
+OPEN pelicula_cursor13;
+
+FETCH NEXT FROM pelicula_cursor13
+INTO @Titulo, @Director, @Anio;
+
+WHILE @@FETCH_STATUS = 0
+BEGIN
+    PRINT 'Título: ' + @Titulo +
+          ' | Director: ' + @Director +
+          ' | Año: ' + CAST(@Anio AS NVARCHAR);
+
+    FETCH NEXT FROM pelicula_cursor13
+    INTO @Titulo, @Director, @Anio;
+END;
+
+CLOSE pelicula_cursor13;
+DEALLOCATE pelicula_cursor13;
