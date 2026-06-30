@@ -1,0 +1,87 @@
+CREATE DATABASE ClinicaDentalDB;
+USE ClinicaDentalDB;
+
+
+-- TABLA PACIENTES
+CREATE TABLE Pacientes (
+    id_paciente INT IDENTITY(1,1) PRIMARY KEY,
+    nombre VARCHAR(100) NOT NULL,
+    telefono VARCHAR(20),
+    direccion VARCHAR(150)
+);
+
+-- TABLA ODONTOLOGOS
+CREATE TABLE Odontologos (
+    id_odontologo INT IDENTITY(1,1) PRIMARY KEY,
+    nombre VARCHAR(100) NOT NULL,
+    especialidad VARCHAR(50),
+    telefono VARCHAR(20)
+);
+
+-- TABLA CITAS
+CREATE TABLE Citas (
+    id_cita INT IDENTITY(1,1) PRIMARY KEY,
+    id_paciente INT NOT NULL,
+    id_odontologo INT NOT NULL,
+    fecha DATE NOT NULL,
+    hora TIME NOT NULL,
+    estado VARCHAR(30) DEFAULT 'Programada',
+
+    CONSTRAINT FK_Citas_Pacientes
+        FOREIGN KEY (id_paciente)
+        REFERENCES Pacientes(id_paciente),
+
+    CONSTRAINT FK_Citas_Odontologos
+        FOREIGN KEY (id_odontologo)
+        REFERENCES Odontologos(id_odontologo)
+);
+
+-- INSERTAR DATOS
+INSERT INTO Pacientes (nombre, telefono, direccion)
+VALUES
+('Ana Torres', '987654321', 'Av. Los Pinos 123'),
+('Luis Mendoza', '945678123', 'Jr. Lima 456'),
+('Carla Ruiz', '978123456', 'Av. Central 789');
+
+INSERT INTO Odontologos (nombre, especialidad, telefono)
+VALUES
+('Dr. Carlos Pérez', 'Ortodoncia', '999111222'),
+('Dra. María López', 'Endodoncia', '988333444'),
+('Dr. José Ramírez', 'Odontología General', '977555666');
+
+-- TRANSACCIÓN CON COMMIT
+BEGIN TRANSACTION;
+
+INSERT INTO Citas (id_paciente, id_odontologo, fecha, hora, estado)
+VALUES (1, 1, '2026-07-15', '09:00:00', 'Confirmada');
+
+COMMIT TRANSACTION;
+
+-- TRANSACCIÓN CON ROLLBACK
+BEGIN TRANSACTION;
+
+INSERT INTO Citas (id_paciente, id_odontologo, fecha, hora, estado)
+VALUES (2, 2, '2026-07-20', '10:30:00', 'Programada');
+
+ROLLBACK TRANSACTION;
+
+-- TRANSACCIÓN CON SAVEPOINT
+BEGIN TRANSACTION;
+
+INSERT INTO Citas (id_paciente, id_odontologo, fecha, hora, estado)
+VALUES (3, 3, '2026-08-01', '11:00:00', 'Programada');
+
+SAVE TRANSACTION Punto1;
+
+UPDATE Citas
+SET estado = 'Reprogramada'
+WHERE id_cita = 2;
+
+ROLLBACK TRANSACTION Punto1;
+
+COMMIT TRANSACTION;
+
+-- CONSULTAS
+SELECT * FROM Pacientes;
+SELECT * FROM Odontologos;
+SELECT * FROM Citas;
